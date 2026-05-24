@@ -29,7 +29,7 @@ import Image from "next/image";
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
 
 const SMART_LINK = "https://ffm.to/obi-pour-me-a-drink";
-const INSTAGRAM = "https://instagram.com/obi";
+const INSTAGRAM = "https://instagram.com/hashtagobi";
 const DROP_DATE = new Date("2026-06-12T00:00:00");
 const PREVIEW_SECS = 30;
 
@@ -58,7 +58,7 @@ interface Credit {
 }
 
 const ARTIST_CREDITS: Credit[] = [
-  { role: "Primary Artist", name: "Obi" },
+  { role: "Primary Artist", name: "obi" },
   { role: "Featuring", name: "Promise Kadree" },
   { role: "Featuring", name: "Siah" },
 ];
@@ -213,7 +213,7 @@ function PreviewPlayer() {
         {state === "idle" && (
           <button className="ctrl-btn ctrl-btn--primary" onClick={play}>
             <span className="ctrl-dot" />
-            <span>Hear a preview</span>
+            <span>PLAY</span>
           </button>
         )}
         {state === "playing" && (
@@ -268,11 +268,9 @@ export default function PourMeADrink() {
       {/* ── HERO ── */}
       <section id="hero">
         <div className="hero-left">
-          <p className="hero-eyebrow">New Single — June 12, 2025</p>
-          <h1 className="hero-title">
-            pour me a drink
-          </h1>
-          <p className="hero-artist">Obi</p>
+          <p className="hero-eyebrow">New Single — June 12, 2026</p>
+          <h1 className="hero-title">pour me a drink</h1>
+          {/* <p className="hero-artist">obi</p> */}
           <div className="hero-stem" />
           <div className="hero-countdown">
             {(["d", "h", "m", "s"] as const).map((u) => (
@@ -376,11 +374,8 @@ export default function PourMeADrink() {
 
       {/* ── FOOTER ── */}
       <footer>
-        <p className="footer-logo">Pour Me A Drink</p>
+        {/* <p className="footer-logo">Pour Me A Drink</p> */}
         <ul className="footer-links">
-          <li>
-            <a href="#stream">Listen</a>
-          </li>
           <li>
             <a href="#lyrics">Lyrics</a>
           </li>
@@ -394,7 +389,7 @@ export default function PourMeADrink() {
           </li>
         </ul>
         <p className="footer-copy">
-          © 2025 Obi / LightWave · pourmeadrink.com · All rights reserved
+          © 2026 obi / LightWave · pourmeadrink.com · All rights reserved
         </p>
       </footer>
     </>

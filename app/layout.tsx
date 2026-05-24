@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Pour Me A Drink — Obi",
-  description: "New single by Obi. Out June 12.",
+  title: "Pour Me A Drink — obi",
+  description: "New single by obi. Out June 12.",
   openGraph: {
-    title: "Pour Me A Drink — Obi",
-    description: "New single by Obi. Out June 12.",
+    title: "Pour Me A Drink — obi",
+    description: "New single by obi. Out June 12.",
     url: "https://pourmeadrink.com",
     siteName: "Pour Me A Drink",
     images: [{ url: "/images/cover.jpg", width: 1200, height: 1200 }],
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pour Me A Drink — Obi",
+    title: "Pour Me A Drink — obi",
     images: ["/images/cover.jpg"],
   },
 };
