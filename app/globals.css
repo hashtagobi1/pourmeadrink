@@ -1,26 +1,701 @@
-@import "tailwindcss";
+@font-face {
+  font-family: "AnteCF";
+  src: url("/fonts/AnteCF-Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "AnteCF";
+  src: url("/fonts/AnteCF-Italic.otf") format("opentype");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hultog";
+  src: url("/fonts/Hultog.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hultog";
+  src: url("/fonts/Hultog-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f2eae0;
+  --paper-mid: #e8ddd0;
+  --paper-deep: #ddd0c0;
+  --ink: #140c08;
+  --wine: #6b1a2a;
+  --wine-hover: #8b2a3a;
+  --muted: #8a7060;
+  --border: rgba(106, 26, 42, 0.18);
+  --border-sub: rgba(106, 26, 42, 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Hultog", Georgia, serif;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.042;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 800;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 48px;
+  background: linear-gradient(
+    to bottom,
+    rgba(242, 234, 224, 0.97) 60%,
+    transparent
+  );
+}
+.nav-logo {
+  font-family: "AnteCF", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--wine);
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 100px 48px 60px;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  letter-spacing: 0.5em;
+  color: var(--wine);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: up 0.9s ease 0.15s forwards;
+}
+.hero-title {
+  font-family: "AnteCF", serif;
+  font-style: italic;
+  font-size: clamp(52px, 7vw, 100px);
+  font-weight: 400;
+  line-height: 0.88;
+  color: var(--ink);
+  opacity: 0;
+  animation: up 0.9s ease 0.3s forwards;
+}
+.hero-artist {
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  letter-spacing: 0.5em;
+  color: var(--muted);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: up 0.8s ease 0.45s forwards;
+}
+.hero-stem {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--wine), transparent);
+  opacity: 0;
+  animation: up 0.8s ease 0.6s forwards;
+}
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  animation: up 0.8s ease 0.75s forwards;
+}
+
+.play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 36px;
+  border: 1px solid var(--wine);
+  background: transparent;
+  color: var(--ink);
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s;
+  align-self: flex-start;
+}
+.play-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--wine);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.play-btn:hover::before {
+  transform: scaleX(1);
+}
+.play-btn:hover {
+  color: var(--paper);
+}
+.play-btn > * {
+  position: relative;
+  z-index: 1;
+}
+.play-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wine);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.play-btn:hover .play-dot {
+  background: var(--paper);
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: up 0.4s ease forwards;
+}
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 36px;
+}
+.bar {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--wine);
+  animation: wav 1.2s ease-in-out infinite;
+}
+.bar--stopped {
+  animation: none !important;
+  transform: scaleY(0.15) !important;
+  opacity: 0.15 !important;
+}
+
+@keyframes wav {
+  0%,
+  100% {
+    transform: scaleY(0.2);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 0.75;
+  }
+}
+
+.player-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "Hultog", serif;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.prog-track {
+  width: 140px;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+}
+.prog-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--wine);
+  width: 0%;
+  transition: width 1s linear;
+}
+
+.smart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 36px;
+  background: var(--wine);
+  color: var(--paper);
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s;
+  border: 1px solid var(--wine);
+}
+.smart-btn:hover {
+  background: var(--wine-hover);
+  border-color: var(--wine-hover);
+}
+
+.hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 0;
+  animation: up 1s ease 0.5s forwards;
+}
+.cover-wrap {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+}
+.cover-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 32px 80px rgba(20, 12, 8, 0.25);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: up 0.8s ease 1.2s forwards;
+}
+.scroll-cue span {
+  font-family: "Hultog", serif;
+  font-size: 8px;
+  letter-spacing: 0.45em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.scroll-stem {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, var(--wine), transparent);
+  animation: bob 2s ease 1.4s infinite;
+}
+
+.sec {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 48px;
+  gap: 48px;
+}
+.sec-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.sec-label {
+  font-family: "Hultog", serif;
+  font-size: 8px;
+  letter-spacing: 0.55em;
+  color: var(--wine);
+  text-transform: uppercase;
+}
+.sec-title {
+  font-family: "AnteCF", serif;
+  font-style: italic;
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 400;
+  line-height: 0.95;
+  color: var(--ink);
+}
+.sec-sub {
+  font-family: "Hultog", serif;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.85;
+  letter-spacing: 0.04em;
+  text-align: center;
+  max-width: 400px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.85s ease,
+    transform 0.85s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+#stream {
+  background: var(--paper-mid);
+}
+.countdown {
+  display: flex;
+  border: 1px solid var(--border);
+}
+.cd-box {
+  padding: 24px 32px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  min-width: 88px;
+}
+.cd-box:last-child {
+  border-right: none;
+}
+.cd-num {
+  font-family: "AnteCF", serif;
+  font-size: 40px;
+  color: var(--ink);
+  line-height: 1;
+}
+.cd-lbl {
+  font-family: "Hultog", serif;
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.stream-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  max-width: 700px;
+  border: 1px solid var(--border);
+}
+.stream-tile {
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  transition: background 0.2s;
+  border-right: 1px solid var(--border);
+}
+.stream-tile:last-child {
+  border-right: none;
+}
+.stream-tile:hover {
+  background: rgba(106, 26, 42, 0.04);
+}
+.tile-num {
+  font-family: "Hultog", serif;
+  font-size: 8px;
+  letter-spacing: 0.4em;
+  color: var(--wine);
+  text-transform: uppercase;
+}
+.tile-head {
+  font-family: "AnteCF", serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.tile-body {
+  font-family: "Hultog", serif;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+.tile-arr {
+  font-size: 16px;
+  color: var(--wine);
+  margin-top: auto;
+}
+
+#lyrics {
+  background: var(--paper);
+}
+.lyric-block {
+  max-width: 480px;
+  width: 100%;
+  border-left: 1px solid var(--wine);
+  padding-left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.lyric-line {
+  font-family: "Hultog", serif;
+  font-size: clamp(13px, 2vw, 18px);
+  color: var(--ink);
+  line-height: 1.65;
+  opacity: 0.18;
+  transition:
+    opacity 0.5s ease,
+    color 0.5s ease;
+}
+.lyric-line.hi {
+  opacity: 1;
+  color: var(--wine);
+}
+.lyric-line.mid {
+  opacity: 0.4;
+}
+
+#credits {
+  background: var(--paper-mid);
+}
+.credits-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  width: 100%;
+  max-width: 760px;
+  border: 1px solid var(--border);
+}
+.credits-col {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  border-right: 1px solid var(--border);
+}
+.credits-col:last-child {
+  border-right: none;
+}
+.credits-col-title {
+  font-family: "Hultog", serif;
+  font-size: 8px;
+  letter-spacing: 0.5em;
+  color: var(--wine);
+  text-transform: uppercase;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-sub);
+}
+.credit {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.credit-role {
+  font-family: "Hultog", serif;
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.credit-name {
+  font-family: "AnteCF", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.credits-footer {
+  width: 100%;
+  max-width: 760px;
+  padding: 20px 40px;
+  border: 1px solid var(--border);
+  border-top: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.credits-footer-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+footer {
+  background: var(--paper-deep);
+  border-top: 1px solid var(--border);
+  padding: 36px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-logo {
+  font-family: "AnteCF", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--wine);
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.footer-links a {
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--ink);
+}
+.footer-copy {
+  font-family: "Hultog", serif;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  width: 100%;
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-sub);
+}
+
+@keyframes up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 18px 20px;
+  }
+  .nav-links {
+    gap: 16px;
+  }
+  #hero {
+    grid-template-columns: 1fr;
+    padding: 100px 24px 60px;
+    text-align: center;
+  }
+  .hero-left {
+    align-items: center;
+  }
+  .play-btn,
+  .smart-btn {
+    align-self: center;
+  }
+  .hero-right {
+    order: -1;
+  }
+  .cover-wrap {
+    max-width: 320px;
+  }
+  .sec {
+    padding: 80px 20px;
+    gap: 36px;
+  }
+  .stream-tiles {
+    grid-template-columns: 1fr;
+  }
+  .stream-tile {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .stream-tile:last-child {
+    border-bottom: none;
+  }
+  .credits-layout {
+    grid-template-columns: 1fr;
+  }
+  .credits-col {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .credits-col:last-child {
+    border-bottom: none;
+  }
+  .credits-footer {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .countdown {
+    flex-wrap: wrap;
+  }
+  .cd-box {
+    flex: 1;
+    min-width: 70px;
+  }
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
 }
