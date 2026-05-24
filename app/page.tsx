@@ -30,7 +30,7 @@ import Image from "next/image";
 
 const SMART_LINK = "https://ffm.to/obi-pour-me-a-drink";
 const INSTAGRAM = "https://instagram.com/obi";
-const DROP_DATE = new Date("2025-06-12T00:00:00");
+const DROP_DATE = new Date("2026-06-12T00:00:00");
 const PREVIEW_SECS = 30;
 
 const WAVEFORM_HEIGHTS = [
@@ -257,9 +257,6 @@ export default function PourMeADrink() {
         <p className="nav-logo">Pour Me A Drink</p>
         <ul className="nav-links">
           <li>
-            <a href="#stream">Listen</a>
-          </li>
-          <li>
             <a href="#lyrics">Lyrics</a>
           </li>
           <li>
@@ -273,11 +270,20 @@ export default function PourMeADrink() {
         <div className="hero-left">
           <p className="hero-eyebrow">New Single — June 12, 2025</p>
           <h1 className="hero-title">
-            pour me
-            <br />a drink
+            pour me a drink
           </h1>
           <p className="hero-artist">Obi</p>
           <div className="hero-stem" />
+          <div className="hero-countdown">
+            {(["d", "h", "m", "s"] as const).map((u) => (
+              <div key={u} className="cd-box">
+                <div className="cd-num">{countdown[u]}</div>
+                <div className="cd-lbl">
+                  {{ d: "Days", h: "Hours", m: "Mins", s: "Secs" }[u]}
+                </div>
+              </div>
+            ))}
+          </div>
           <PreviewPlayer />
         </div>
 
@@ -286,31 +292,12 @@ export default function PourMeADrink() {
             <iframe
               src={SMART_LINK}
               width="100%"
-              height="340"
+              height="700"
               frameBorder="0"
               allow="autoplay"
               title="Pour Me A Drink — Pre-save & Stream"
             />
           </div>
-        </div>
-      </section>
-
-      {/* ── STREAM / COUNTDOWN ── */}
-      <section id="stream" className="sec sec--mid">
-        <div className="sec-head reveal">
-          <p className="sec-label">Out June 12</p>
-          <h2 className="sec-title">Listen</h2>
-        </div>
-
-        <div className="countdown reveal">
-          {(["d", "h", "m", "s"] as const).map((u) => (
-            <div key={u} className="cd-box">
-              <div className="cd-num">{countdown[u]}</div>
-              <div className="cd-lbl">
-                {{ d: "Days", h: "Hours", m: "Mins", s: "Secs" }[u]}
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -487,19 +474,21 @@ nav {
   display:grid;
   grid-template-columns:1fr 1fr;
   align-items:center;
-  padding:80px 48px 60px;
-  gap:40px;
+  padding:96px 48px 60px;
+  gap:48px;
 }
 
 .hero-left { display:flex; flex-direction:column; gap:20px; }
 .hero-eyebrow { font-family:'Hultog',serif; font-size:9px; letter-spacing:0.5em; color:var(--wine); text-transform:uppercase; opacity:0; animation:up 0.9s ease 0.1s forwards; }
-.hero-title { font-family:'AnteCF',serif; font-style:italic; font-size:clamp(48px,6.5vw,92px); font-weight:400; line-height:0.88; color:var(--ink); opacity:0; animation:up 0.9s ease 0.25s forwards; }
+.hero-title { font-family:'AnteCF',serif; font-style:italic; font-size:clamp(72px,9vw,160px); font-weight:400; line-height:0.88; color:var(--ink); opacity:0; animation:up 0.9s ease 0.25s forwards; }
 .hero-artist { font-family:'Hultog',serif; font-size:9px; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; opacity:0; animation:up 0.8s ease 0.4s forwards; }
 .hero-stem { width:1px; height:36px; background:linear-gradient(to bottom,var(--wine),transparent); opacity:0; animation:up 0.8s ease 0.5s forwards; }
 
-.hero-right { display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:16px; opacity:0; animation:up 1s ease 0.4s forwards; }
-.cover-img { width:100%; max-width:340px; height:auto; display:block; box-shadow:0 24px 64px rgba(20,12,8,0.22); align-self:center; }
-.hero-embed { max-width:340px; align-self:center; }
+.hero-countdown { display:flex; border:1px solid var(--border); opacity:0; animation:up 0.8s ease 0.55s forwards; }
+
+.hero-right { display:flex; align-items:flex-start; width:100%; opacity:0; animation:up 1s ease 0.3s forwards; }
+.hero-embed { width:100%; max-width:100%; }
+.hero-embed.ffm-embed { max-width:100%; }
 
 /* ── PREVIEW PLAYER ── */
 .preview-player { display:flex; flex-direction:column; gap:10px; opacity:0; animation:up 0.8s ease 0.6s forwards; }
@@ -566,6 +555,7 @@ nav {
   background:var(--paper);
 }
 .ffm-embed iframe { display:block; }
+.hero-embed iframe { height: clamp(520px, calc(100vh - 200px), 680px); display:block; }
 
 /* ── LYRICS ── */
 .lyric-block { max-width:440px; width:100%; border-left:1px solid var(--wine); padding-left:24px; display:flex; flex-direction:column; gap:2px; }
@@ -602,12 +592,14 @@ footer { background:var(--paper-deep); border-top:1px solid var(--border); paddi
 /* ── RESPONSIVE ── */
 @media (max-width:768px) {
   nav { padding:16px 20px; }
-  #hero { grid-template-columns:1fr; padding:80px 20px 48px; gap:32px; }
+  #hero { grid-template-columns:1fr; padding:80px 20px 48px; gap:28px; }
   .hero-left { align-items:center; text-align:center; }
+  .hero-title { font-size:clamp(64px,18vw,100px); }
   .ctrl-btn { align-self:center; }
-  .hero-right { order:-1; }
-  .cover-img { max-width:280px; }
+  .hero-right { order:-1; width:100%; }
   .hero-embed { max-width:100%; width:100%; }
+  .hero-embed iframe { height:480px; }
+  .hero-countdown { align-self:center; }
   .sec { padding:60px 20px; gap:28px; }
   .credits-layout { grid-template-columns:1fr; }
   .credits-col { border-right:none; border-bottom:1px solid var(--border); }
